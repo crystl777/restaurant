@@ -8,16 +8,14 @@ public class Dish extends AbstractNamedEntity {
 
     private LocalDate localDate;
 
-    private Restaurant restaurant;
+    private final Restaurant restaurant;
 
-    public Dish(int price, LocalDate localDate, Restaurant restaurant) {
+    public Dish(Integer id, String name, int price, LocalDate localDate, Restaurant restaurant) {
+        super(id, name);
         this.price = price;
         this.restaurant = restaurant;
         this.localDate = localDate;
-
-
     }
-
 
     public int getPrice() {
         return price;
