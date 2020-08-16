@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -33,8 +34,8 @@ public class Dish extends AbstractNamedEntity {
     public Dish(Integer id, String name, int price, LocalDate localDate, Restaurant restaurant) {
         super(id, name);
         this.price = price;
-        this.restaurant = restaurant;
         this.localDate = localDate;
+        this.restaurant = restaurant;
     }
 
     public int getPrice() {
