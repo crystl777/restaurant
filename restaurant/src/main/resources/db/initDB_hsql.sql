@@ -15,6 +15,7 @@ CREATE TABLE users
     password   VARCHAR(255)            NOT NULL,
     registered TIMESTAMP DEFAULT now() NOT NULL
 );
+CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 
 CREATE TABLE restaurants
 (
@@ -31,6 +32,7 @@ CREATE TABLE dishes
     restaurant_id INTEGER      NOT NULL,
     FOREIGN KEY (restaurant_id) REFERENCES RESTAURANTS (id) ON DELETE CASCADE
 );
+CREATE UNIQUE INDEX dishes_unique_restaurant_date_idx ON dishes (restaurant_id, date);
 
 CREATE TABLE user_roles
 (
@@ -49,3 +51,5 @@ CREATE TABLE votes
     FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE CASCADE,
     FOREIGN KEY (restaurant_id) REFERENCES RESTAURANTS (id) ON DELETE CASCADE
 );
+CREATE UNIQUE INDEX votes_unique_date_restaurant_user_idx
+    ON votes (date, restaurant_id, user_id);
