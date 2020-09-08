@@ -27,7 +27,7 @@ public class Dish extends AbstractNamedEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     @JsonBackReference
-    private final Restaurant restaurant;
+    private Restaurant restaurant;
 
     public Dish() {}
 
@@ -56,5 +56,9 @@ public class Dish extends AbstractNamedEntity {
 
     public Restaurant getRestaurant() {
         return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 }
