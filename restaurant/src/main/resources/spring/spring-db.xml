@@ -13,10 +13,10 @@
        http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
 
-    <!--    <context:component-scan base-package="ru.javawebinar.**.repository.jpa"/>-->
+    <!--    <context:component-scan base-package="ru.javawebinar.**.ru.restaurant.repository.jpa"/>-->
 
-    <context:component-scan base-package="repository"/>
-    <jpa:repositories base-package="repository"/>
+    <context:component-scan base-package="ru.restaurant.repository"/>
+    <jpa:repositories base-package="ru.restaurant.repository"/>
 
     <jdbc:initialize-database data-source="dataSource" enabled="$true">
         <jdbc:script location="$initDB_hsql.sql"/>
@@ -36,12 +36,12 @@
     </beans>
 
     <beans profile="datajpa">
-        <context:component-scan base-package="repository"/>
-        <jpa:repositories base-package="repository"/>
+        <context:component-scan base-package="ru.restaurant.repository"/>
+        <jpa:repositories base-package="ru.restaurant.repository"/>
 
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
               p:dataSource-ref="dataSource"
-              p:packagesToScan="model">
+              p:packagesToScan="ru.restaurant.model">
             <!--p:persistenceUnitName="persistenceUnit">-->
 
             <property name="jpaPropertyMap">
@@ -63,7 +63,7 @@
             </property>
         </bean>
 
-        <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
+        <!-- Transaction manager for a single JPA EntityManagerFactory (alternative ru.restaurant.to JTA) -->
         <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
               p:entityManagerFactory-ref="entityManagerFactory"/>
     </beans>
