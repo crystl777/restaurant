@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.Set;
 
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -41,6 +42,11 @@ public class User extends AbstractNamedEntity {
 
     public User() {
     }
+
+    public User(Integer id, String name, String email, String password, Role role) {
+      this(id, name, email, password, EnumSet.of(role), new Date());
+    }
+
 
     public User(Integer id, String name, String email, String password, Set<Role> roles, Date registered) {
         super(id, name);

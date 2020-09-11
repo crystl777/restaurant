@@ -6,20 +6,9 @@ import ru.crystl.restaurant.model.Role;
 import ru.crystl.restaurant.model.User;
 
 public class UserUtil {
-    public static User createNewFromTo(User userTo) {
-        return new User(null, userTo.getName(), userTo.getEmail().toLowerCase(), userTo.getPassword(), Role.USER);
+    public static User createNew(User user) {
+        return new User(null, user.getName(), user.getEmail().toLowerCase(), user.getPassword(), Role.USER);
     }
-
-//    public static User updateFromTo(User user, UserTo userTo) {
-//        user.setName(userTo.getName());
-//        user.setEmail(userTo.getEmail().toLowerCase());
-//        user.setPassword(userTo.getPassword());
-//        return user;
-//    }
-//
-//    public static User asTo(User user) {
-//        return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword());
-//    }
 
     public static User prepareToSave(User user, PasswordEncoder passwordEncoder) {
         String password = user.getPassword();
