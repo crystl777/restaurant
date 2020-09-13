@@ -12,7 +12,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import ru.crystl.restaurant.model.User;
 import ru.crystl.restaurant.repository.user.DataJpaUserRepository;
-import ru.crystl.restaurant.repository.user.UserRepository;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public abstract class AbstractUserController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private UserRepository repository;
+    private DataJpaUserRepository repository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;

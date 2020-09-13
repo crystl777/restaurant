@@ -2,52 +2,32 @@ package ru.crystl.restaurant.web.dish;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.crystl.restaurant.model.Dish;
 import ru.crystl.restaurant.repository.dish.DataJpaDishRepository;
-import ru.crystl.restaurant.repository.dish.DishRepository;
 
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+
+import static ru.crystl.restaurant.util.ValidationUtil.*;
 
 public class AdminDishRestController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     static final String REST_URL = "/rest/admin/dishes";
 
-    DishRepository repository;
-
-    public AdminDishRestController(DishRepository repository) {
-        this.repository = repository;
-    }
-
-    @GetMapping(value = "/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Cacheable("dishes")
-    public List<Dish> getAll(@PathVariable("restaurantId") int restaurantId) {
-        log.info("getAll");
-        return repository.getAll(restaurantId, LocalDate.now());
-    }
-
-    @GetMapping(value = "/{restaurantId}/dish/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Dish get(@PathVariable int id, @PathVariable("restaurantId") int restaurantId) {
-        log.info("get {}", id);
-        return checkNotFoundWithId(repository.get(id, restaurantId), id);
-    }
-
-    @DeleteMapping("/{restaurantId}/dish/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(value = "dishes", allEntries = true)
-    public void delete(@PathVariable int id, @PathVariable int restaurantId) {
-        repository.delete(id, restaurantId);
-    }
+    @Autowired
+    private DataJpaDishRepository repository;
 
     @PostMapping(value = "{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(value = "dishes", allEntries = true)
@@ -73,4 +53,23 @@ public class AdminDishRestController {
         repository.save(dish, restaurantId);
     }
 
+    @DeleteMapping("/{restaurantId}/dish/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "dishes", allEntries = true)
+    public void delete(@PathVariable int id, @PathVariable int restaurantId) {
+        repository.delete(id, restaurantId);
+    }
+
+    @GetMapping(value = "/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Cacheable("dishes")
+    public List<Dish> getAll(@PathVariable("restaurantId") int restaurantId) {
+        log.info("getAll");
+        return repository.getAll(restaurantId, LocalDate.now());
+    }
+
+    @GetMapping(value = "/{restaurantId}/dish/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Dish get(@PathVariable int id, @PathVariable("restaurantId") int restaurantId) {
+        log.info("get {}", id);
+        return checkNotFoundWithId(repository.get(id, restaurantId), id);
+    }
 }

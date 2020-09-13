@@ -1,10 +1,11 @@
 package ru.crystl.restaurant.web.user;
 
-import ru.crystl.restaurant.HasIdAndEmail;
-import ru.crystl.restaurant.repository.user.DataJpaUserRepository;
-import ru.crystl.restaurant.model.User;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import ru.crystl.restaurant.HasIdAndEmail;
+import ru.crystl.restaurant.model.User;
+import ru.crystl.restaurant.repository.user.DataJpaUserRepository;
+import ru.crystl.restaurant.web.ExceptionInfoHandler;
 
 @Component
 public class UniqueMailValidator implements org.springframework.validation.Validator {

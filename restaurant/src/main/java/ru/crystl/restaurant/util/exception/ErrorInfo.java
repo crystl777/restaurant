@@ -1,7 +1,5 @@
 package ru.crystl.restaurant.util.exception;
 
-import javax.lang.model.type.ErrorType;
-
 public class ErrorInfo {
     private final String url;
     private final ErrorType type;

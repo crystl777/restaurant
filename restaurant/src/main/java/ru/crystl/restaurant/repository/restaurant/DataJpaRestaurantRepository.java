@@ -18,7 +18,7 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public Restaurant save(Restaurant restaurant, int userId) {
+    public Restaurant save(Restaurant restaurant) {
         return crudRepository.save(restaurant);
     }
 

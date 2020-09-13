@@ -4,6 +4,9 @@ import ru.crystl.restaurant.repository.restaurant.CrudRestaurantRepository;
 import ru.crystl.restaurant.model.Dish;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Repository
 public class DataJpaDishRepository implements DishRepository {
     private final CrudDishRepository crudRepository;
@@ -36,5 +39,10 @@ public class DataJpaDishRepository implements DishRepository {
         return crudRepository.findById(id)
                 .filter(dish -> dish.getRestaurant().getId() == restaurantId)
                 .orElse(null);
+    }
+
+    @Override
+    public List<Dish> getAll(int restaurantId, LocalDate date) {
+        return crudRepository.findAllByRestaurantIdAndDateOrderByName(restaurantId, date);
     }
 }
