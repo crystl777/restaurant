@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import ru.crystl.restaurant.model.Restaurant;
 import ru.crystl.restaurant.repository.restaurant.DataJpaRestaurantRepository;
 import ru.crystl.restaurant.repository.vote.DataJpaVoteRepository;
@@ -22,15 +24,17 @@ public class AbstractRestaurantController {
     @Autowired
     DataJpaVoteRepository voteRepository;
 
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Restaurant get(int id) {
         log.info("get {}", id);
-        return checkNotFoundWithId(repository.get(id), id);
+        return checkNotFoundWithId(getWithDishes(id, LocalDate.now()), id);
     }
 
     @Cacheable("restaurants")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Restaurant> getAll() {
         log.info("getAll");
-        return repository.getAll();
+        return getAllWithDishes(LocalDate.now());
     }
 
     public Restaurant getWithDishes(int id, LocalDate date) {
