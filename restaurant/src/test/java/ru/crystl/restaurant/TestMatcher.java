@@ -5,6 +5,8 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class TestMatcher<T> {
     private final Class<T> clazz;
     private final BiConsumer<T, T> assertion;
@@ -55,6 +57,6 @@ public class TestMatcher<T> {
     }
 
     public ResultMatcher contentJson(Iterable<T> expected) {
-        return result -> assertMatch(readListFromJsonMvcResult(result, clazz), expected);
+        return result -> assertMatch(TestUtil.readListFromJsonMvcResult(result, clazz), expected);
     }
 }

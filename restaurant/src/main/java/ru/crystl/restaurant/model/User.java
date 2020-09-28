@@ -3,6 +3,7 @@ package ru.crystl.restaurant.model;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.util.CollectionUtils;
+import ru.crystl.restaurant.HasIdAndEmail;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -17,7 +18,7 @@ import java.util.Set;
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
-public class User extends AbstractNamedEntity {
+public class User extends AbstractNamedEntity implements HasIdAndEmail {
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
@@ -42,20 +43,20 @@ public class User extends AbstractNamedEntity {
     @NotNull
     private Date registered = new Date();
 
-    public User() {
+    public User(User user) {
+        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRegistered(), user.getRoles());
     }
 
-    public User(Integer id, String name, String email, String password, Role role) {
-      this(id, name, email, password, EnumSet.of(role), new Date());
+    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
+        this(id, name, email, password, new Date(), EnumSet.of(role, roles));
     }
 
-
-    public User(Integer id, String name, String email, String password, Set<Role> roles, Date registered) {
+    public User(Integer id, String name, String email, String password, Date registered, Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
-        this.roles = roles;
         this.registered = registered;
+        setRoles(roles);
     }
 
     public String getEmail() {
