@@ -1,6 +1,5 @@
 package ru.crystl.restaurant.web;
 
-import org.junit.jupiter.api.Assumptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
@@ -12,8 +11,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import ru.crystl.restaurant.ActiveProfileResolver;
-import ru.crystl.restaurant.Profiles;
 
 import javax.annotation.PostConstruct;
 
@@ -26,7 +23,6 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 })
 
 @Transactional
-@ActiveProfiles(resolver = ActiveProfileResolver.class)
 abstract public class AbstractControllerTest {
 
     private static final CharacterEncodingFilter CHARACTER_ENCODING_FILTER = new CharacterEncodingFilter();
@@ -43,10 +39,6 @@ abstract public class AbstractControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
-
-    public void assumeDataJpa() {
-        Assumptions.assumeTrue(env.acceptsProfiles(org.springframework.core.env.Profiles.of(Profiles.DATAJPA)), "DATA-JPA only");
-    }
 
     @PostConstruct
     private void postConstruct() {
