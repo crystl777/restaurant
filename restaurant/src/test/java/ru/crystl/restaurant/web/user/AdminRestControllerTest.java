@@ -10,7 +10,8 @@ import ru.crystl.restaurant.web.AbstractControllerTest;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.crystl.restaurant.UserTestData.ADMIN_ID;
+import static ru.crystl.restaurant.TestUtil.userHttpBasic;
+import static ru.crystl.restaurant.UserTestData.*;
 
 public class AdminRestControllerTest extends AbstractControllerTest {
 
@@ -18,7 +19,6 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
     @Autowired
     private DataJpaUserRepository repository;
-
 
     @Test
     void get() throws Exception {
