@@ -1,31 +1,33 @@
 package ru.crystl.restaurant.web.user;
 
 import ru.crystl.restaurant.model.User;
+import ru.crystl.restaurant.to.UserTo;
 import ru.crystl.restaurant.util.UserUtil;
 
 public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
     private static final long serialVersionUID = 1L;
 
-    private User user;
+    private UserTo userTo;
 
     public AuthorizedUser(User user) {
         super(user.getEmail(), user.getPassword(), user.getRoles());
-        this.user = UserUtil.asTo(user);
+        this.userTo = UserUtil.asTo(user);
     }
 
     public int getId() {
-        return user.id();
+        return userTo.id();
     }
 
-    public void update(User new) {
-        user = new;
+    public void update(UserTo newTo) {
+        userTo = newTo;
     }
 
-    public User getUserTo() {
-        return user;
+    public UserTo getUserTo() {
+        return userTo;
     }
 
     @Override
     public String toString() {
         return userTo.toString();
     }
+}
