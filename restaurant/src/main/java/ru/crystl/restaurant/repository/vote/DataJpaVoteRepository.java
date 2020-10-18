@@ -1,29 +1,33 @@
 package ru.crystl.restaurant.repository.vote;
 
-import ru.crystl.restaurant.repository.restaurant.DataJpaRestaurantRepository;
-import ru.crystl.restaurant.repository.user.DataJpaUserRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.crystl.restaurant.model.Vote;
+import ru.crystl.restaurant.repository.restaurant.CrudRestaurantRepository;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class DataJpaVoteRepository implements VoteRepository {
-    private final CrudVoteRepository crudRepository;
-    private final DataJpaUserRepository userRepository;
-    private final DataJpaRestaurantRepository restaurantRepository;
+@Repository
+public class
+DataJpaVoteRepository implements VoteRepository {
 
-    public DataJpaVoteRepository(CrudVoteRepository crudRepository, DataJpaUserRepository userRepository, DataJpaRestaurantRepository restaurantRepository) {
+    private final CrudVoteRepository crudRepository;
+    private final CrudRestaurantRepository crudRestaurantRepository;
+
+    public DataJpaVoteRepository(CrudVoteRepository crudRepository, CrudRestaurantRepository crudRestaurantRepository) {
         this.crudRepository = crudRepository;
-        this.userRepository = userRepository;
-        this.restaurantRepository = restaurantRepository;
+        this.crudRestaurantRepository = crudRestaurantRepository;
     }
 
-
+    @Transactional
     @Override
-    public Vote save(int userId, int restaurantId) {
-        Vote vote = new Vote();
-        vote.setRestaurant(restaurantRepository.get(restaurantId));
-        vote.setUser(userRepository.get(userId));
+    public Vote save(Vote vote, int restaurantId) {
+        if (!vote.isNew() && get(vote.getId(), restaurantId) == null) {
+            return null;
+        } else if (!vote.isNew()) {
+            vote.setRestaurant(crudRestaurantRepository.getOne(restaurantId));
+        }
         return crudRepository.save(vote);
     }
 
@@ -33,18 +37,15 @@ public class DataJpaVoteRepository implements VoteRepository {
     }
 
     @Override
-    public Vote get(int id) {
-        return crudRepository.findById(id).orElse(null);
+    public Vote get(int id, int restaurantId) {
+        return crudRepository.findById(id)
+                .filter(vote -> vote.getRestaurant().getId() == restaurantId)
+                .orElse(null);
     }
 
     @Override
     public Vote getByUserAndDate(int userId, LocalDate date) {
         return crudRepository.findByUserAndDate(userId, date);
-    }
-
-    @Override
-    public List<Vote> getByRestaurantAndDate(int restaurantId, LocalDate date) {
-        return crudRepository.findByRestaurantAndDate(restaurantId, date);
 
     }
 
@@ -57,4 +58,6 @@ public class DataJpaVoteRepository implements VoteRepository {
     public List<Vote> getAll() {
         return crudRepository.findAll();
     }
+
+
 }

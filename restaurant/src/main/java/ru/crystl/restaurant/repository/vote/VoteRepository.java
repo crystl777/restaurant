@@ -7,15 +7,13 @@ import java.util.List;
 
 public interface VoteRepository {
 
-    Vote save(int userId, int restaurantId);
+    Vote save(Vote vote, int restaurantId);
 
     boolean delete(int id);
 
-    Vote get(int id);
+    Vote get(int id, int restaurantId);
 
     Vote getByUserAndDate(int userId, LocalDate date);
-
-    List<Vote> getByRestaurantAndDate(int restaurantId, LocalDate date);
 
     List<Vote> getAllByDate(LocalDate date);
 
