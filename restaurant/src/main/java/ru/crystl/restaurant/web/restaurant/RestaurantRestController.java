@@ -1,40 +1,79 @@
 package ru.crystl.restaurant.web.restaurant;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.crystl.restaurant.model.Restaurant;
 import ru.crystl.restaurant.model.Vote;
 import ru.crystl.restaurant.util.exception.LateVoteException;
-import ru.crystl.restaurant.util.exception.NotFoundException;
-import ru.crystl.restaurant.web.user.SecurityUtil;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+
+import static ru.crystl.restaurant.util.ValidationUtil.assureIdConsistent;
+import static ru.crystl.restaurant.util.ValidationUtil.checkNew;
+import static ru.crystl.restaurant.web.user.SecurityUtil.authUserId;
 
 @RestController
 @RequestMapping(RestaurantRestController.REST_URL)
 public class RestaurantRestController extends AbstractRestaurantController {
-
     static final String REST_URL = "/rest/profile/restaurants";
     private static final LocalTime VOTE_MAX_TIME_ALLOWED = LocalTime.of(11, 0);
 
-    @GetMapping("/{id}/vote")
-    public Vote vote(@PathVariable int id) throws Exception {
-        Vote vote = voteRepository.getByUserAndDate(SecurityUtil.authUserId(), LocalDate.now());
-        Restaurant restaurant = super.get(id);
-        if (restaurant == null) {
-            throw new NotFoundException("There is no such restaurant");
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Restaurant> getAll(@RequestParam(value = "withDishes", required = false, defaultValue = "true") boolean withDishes) {
+        if (withDishes) {
+            return super.getAllWithDishes(LocalDate.now());
         }
-        if (vote == null) {
-            vote = voteRepository.save(SecurityUtil.authUserId(), id);
-        } else {
-            if (LocalTime.now().isAfter(VOTE_MAX_TIME_ALLOWED)) {
-                throw new LateVoteException("You are not allowed to change your vote after 11:00 A.M.");
-            }
-            vote.setRestaurant(super.get(id));
+        return super.getAll();
+    }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Restaurant get(@PathVariable int id, @RequestParam(value = "withDishes", required = false, defaultValue = "true") boolean withDishes) {
+        if (withDishes) {
+            return super.getWithDishes(id, LocalDate.now());
         }
-        return vote;
+        return super.get(id);
+    }
+
+
+    @GetMapping("/get_vote")
+    public Vote getVote() {
+        return voteRepository.getByUserAndDate(authUserId(), LocalDate.now());
+    }
+
+    @PostMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Vote> vote(@Valid @RequestBody Vote vote, @PathVariable int restaurantId) throws Exception {
+        log.info("create {}", vote);
+        checkNew(vote);
+        Assert.notNull(vote, "vote must not be null");
+        if (authUserId() != vote.getUser().id()) {
+            throw new IllegalArgumentException("vote doesn't contain information about your user");
+        }
+        Vote created = voteRepository.save(vote, restaurantId);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/get_vote")
+                .build().toUri()
+                ;
+        return ResponseEntity.created(uriOfNewResource).body(created);
+    }
+
+    @PutMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void voteUpdate(@Valid @RequestBody Vote vote, @PathVariable int restaurantId) throws Exception{
+        log.info("update {}", vote);
+        assureIdConsistent(vote, getVote().id());
+        if (authUserId() != vote.getUser().id()) {
+            throw new IllegalArgumentException("vote doesn't contain information about your user");
+        } else if (LocalTime.now().isAfter(VOTE_MAX_TIME_ALLOWED)) {
+            throw new LateVoteException("You are not allowed to change your vote after" + VOTE_MAX_TIME_ALLOWED);
+        }
+        voteRepository.save(vote, restaurantId);
     }
 }

@@ -5,6 +5,7 @@ import ru.crystl.restaurant.model.Vote;
 import java.time.LocalDate;
 import java.util.List;
 
+
 public interface VoteRepository {
 
     Vote save(Vote vote, int restaurantId);

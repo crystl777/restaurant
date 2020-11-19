@@ -23,17 +23,24 @@ public class Vote extends AbstractBaseEntity {
     @NotNull
     private User user;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date", nullable = false, columnDefinition = "date default today()")
     @NotNull
-    private LocalDate localDate;
+    private LocalDate date = LocalDate.now();
 
     public Vote() {
     }
 
-    public Vote(Integer id, Restaurant restaurant, LocalDate localDate) {
+    public Vote(Integer id, User user, Restaurant restaurant, LocalDate date) {
         super(id);
+        this.user = user;
         this.restaurant = restaurant;
-        this.localDate = localDate;
+        this.date = date;
+    }
+
+    public Vote(Integer id, User user, Restaurant restaurant) {
+        super(id);
+        this.user = user;
+        this.restaurant = restaurant;
     }
 
     public Restaurant getRestaurant() {
@@ -44,8 +51,8 @@ public class Vote extends AbstractBaseEntity {
         return user;
     }
 
-    public LocalDate getLocalDate() {
-        return localDate;
+    public LocalDate getDate() {
+        return date;
     }
 
     public void setRestaurant(Restaurant restaurant) {
@@ -56,8 +63,7 @@ public class Vote extends AbstractBaseEntity {
         this.user = user;
     }
 
-    public void setLocalDate(LocalDate localDate) {
-        this.localDate = localDate;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
-
 }
