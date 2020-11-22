@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public class
-DataJpaVoteRepository implements VoteRepository {
+DataJpaVoteRepository{
 
     private final CrudVoteRepository crudRepository;
     private final CrudRestaurantRepository crudRestaurantRepository;
@@ -21,7 +21,6 @@ DataJpaVoteRepository implements VoteRepository {
     }
 
     @Transactional
-    @Override
     public Vote save(Vote vote, int restaurantId) {
         if (!vote.isNew() && get(vote.getId(), restaurantId) == null) {
             return null;
@@ -31,32 +30,30 @@ DataJpaVoteRepository implements VoteRepository {
         return crudRepository.save(vote);
     }
 
-    @Override
     public boolean delete(int id) {
         return crudRepository.delete(id) != 0;
     }
 
-    @Override
     public Vote get(int id, int restaurantId) {
         return crudRepository.findById(id)
                 .filter(vote -> vote.getRestaurant().getId() == restaurantId)
                 .orElse(null);
     }
 
-    @Override
     public Vote getByUserAndDate(int userId, LocalDate date) {
         return crudRepository.findByUserAndDate(userId, date);
-
     }
 
-    @Override
+    public List<Vote> getAll() {
+        return crudRepository.findAll();
+    }
+
     public List<Vote> getAllByDate(LocalDate date) {
         return crudRepository.findByDate(date);
     }
 
-    @Override
-    public List<Vote> getAll() {
-        return crudRepository.findAll();
+    public List<Vote> getAllByRestaurantAndDate(int restaurantId, LocalDate date) {
+        return crudRepository.findByRestaurantAndDate(restaurantId, date);
     }
 
 

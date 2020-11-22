@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public class DataJpaDishRepository implements DishRepository {
+public class DataJpaDishRepository {
     private final CrudDishRepository crudRepository;
     private final CrudRestaurantRepository crudRestaurantRepository;
 
@@ -17,7 +17,6 @@ public class DataJpaDishRepository implements DishRepository {
         this.crudRestaurantRepository = crudRestaurantRepository;
     }
 
-    @Override
     public Dish save(Dish dish, int restaurantId) {
         if (!dish.isNew() && get(dish.getId(), restaurantId) == null) {
             return null;
@@ -26,7 +25,6 @@ public class DataJpaDishRepository implements DishRepository {
         return crudRepository.save(dish);
     }
 
-    @Override
     public boolean delete(int id, int restaurantId) {
         if(get(id, restaurantId) != null) {
             return crudRepository.delete(id) != 0;
@@ -34,14 +32,12 @@ public class DataJpaDishRepository implements DishRepository {
         return false;
     }
 
-    @Override
     public Dish get(int id, int restaurantId) {
         return crudRepository.findById(id)
                 .filter(dish -> dish.getRestaurant().getId() == restaurantId)
                 .orElse(null);
     }
 
-    @Override
     public List<Dish> getAll(int restaurantId, LocalDate date) {
         return crudRepository.findAllByRestaurantIdAndDateOrderByName(restaurantId, date);
     }
