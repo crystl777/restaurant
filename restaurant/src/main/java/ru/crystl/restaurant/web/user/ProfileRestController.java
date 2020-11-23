@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.crystl.restaurant.model.User;
+import ru.crystl.restaurant.to.UserTo;
 import ru.crystl.restaurant.util.UserUtil;
 
 import javax.validation.Valid;
@@ -31,14 +32,13 @@ public class ProfileRestController extends AbstractUserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody User user) {
-        super.update(user, authUserId());
+    public void update(@Valid @RequestBody UserTo userTo) {
+        super.update(userTo, authUserId());
     }
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> register(@Valid @RequestBody User user) {
-        User created = super.create(UserUtil.createNew
-                (user));
+    public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
+        User created = super.create(UserUtil.createNewFromTo(userTo));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();

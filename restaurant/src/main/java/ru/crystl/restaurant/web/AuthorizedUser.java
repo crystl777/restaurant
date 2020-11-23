@@ -1,4 +1,4 @@
-package ru.crystl.restaurant.web.user;
+package ru.crystl.restaurant.web;
 
 import ru.crystl.restaurant.model.User;
 import ru.crystl.restaurant.to.UserTo;
