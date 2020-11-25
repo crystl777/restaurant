@@ -8,7 +8,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import ru.crystl.restaurant.model.User;
 import ru.crystl.restaurant.web.json.JsonUtil;
-import ru.crystl.restaurant.web.AuthorizedUser;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;

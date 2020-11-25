@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.crystl.restaurant.model.User;
 import ru.crystl.restaurant.repository.user.DataJpaUserRepository;
-import ru.crystl.restaurant.web.AuthorizedUser;
+import ru.crystl.restaurant.AuthorizedUser;
 
 @Service("userService")
 public class UserService implements UserDetailsService {

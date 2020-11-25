@@ -7,10 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
-public class UserTo implements HasIdAndEmail, Serializable {
-    private static final long serialVersionUID = 1L;
-
-    private Integer id;
+public class UserTo extends BaseTo implements HasIdAndEmail {
 
     @NotBlank
     @Size(min = 2, max = 100)
@@ -22,14 +19,14 @@ public class UserTo implements HasIdAndEmail, Serializable {
     private String email;
 
     @NotBlank
-    @Size(min = 5, max = 32)
+    @Size(min = 5, max = 32, message = "length must be between 5 and 32 characters")
     private String password;
 
     public UserTo() {
     }
 
     public UserTo(Integer id, String name, String email, String password) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.email = email;
         this.password = password;
@@ -61,16 +58,6 @@ public class UserTo implements HasIdAndEmail, Serializable {
     }
 
     @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    @Override
     public String toString() {
         return "UserTo{" +
                 "id=" + id +
@@ -79,3 +66,4 @@ public class UserTo implements HasIdAndEmail, Serializable {
                 '}';
     }
 }
+

@@ -2,7 +2,7 @@ package ru.crystl.restaurant.web.user;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import ru.crystl.restaurant.web.AuthorizedUser;
+import ru.crystl.restaurant.AuthorizedUser;
 
 import static java.util.Objects.requireNonNull;
 
