@@ -32,6 +32,8 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail {
     @Size(min = 5, max = 100)
     private String password;
 
+
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_unique_idx")})
@@ -43,6 +45,10 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail {
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
     private Date registered = new Date();
+
+
+    public User() {
+    }
 
     public User(User user) {
         this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRegistered(), user.getRoles());
