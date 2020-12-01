@@ -14,12 +14,12 @@ VALUES ('USER', 100000),
        ('ADMIN', 100001);
 
 INSERT INTO restaurants (name)
-VALUES ('LAGUNA'),
-       ('South Star');
+VALUES ('Restaurant 1'),
+       ('Restaurant 2');
 
 INSERT INTO dishes (name, price, date, restaurant_id)
-VALUES ('Blue crab', 70, today(), 100002),
-       ('Crab', 50, today(), 100002);
+VALUES ('Dish 1', 70, today(), 100002),
+       ('Dish 2', 50, today(), 100002);
 
 
 INSERT INTO votes (date, user_id, restaurant_id)
