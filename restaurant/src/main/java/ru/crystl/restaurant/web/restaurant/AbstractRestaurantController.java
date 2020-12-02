@@ -3,6 +3,7 @@ package ru.crystl.restaurant.web.restaurant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import ru.crystl.restaurant.model.Restaurant;
 import ru.crystl.restaurant.repository.restaurant.DataJpaRestaurantRepository;
@@ -22,6 +23,11 @@ public abstract class AbstractRestaurantController {
     @Autowired
     DataJpaVoteRepository voteRepository;
 
+    @CacheEvict(value = "restaurants", allEntries = true)
+    public void delete(int id) {
+        log.info("delete {}", id);
+        checkNotFoundWithId(repository.delete(id), id);
+    }
 
     public List<Restaurant> getAll() {
         log.info("getAll");

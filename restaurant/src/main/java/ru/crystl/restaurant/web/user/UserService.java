@@ -9,7 +9,6 @@ import ru.crystl.restaurant.AuthorizedUser;
 
 @Service("userService")
 public class UserService implements UserDetailsService {
-
     private final DataJpaUserRepository repository;
 
     public UserService(DataJpaUserRepository repository) {

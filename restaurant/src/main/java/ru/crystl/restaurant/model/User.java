@@ -20,7 +20,6 @@ import java.util.Set;
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 public class User extends AbstractNamedEntity implements HasIdAndEmail {
-
     @Column(name = "email", nullable = false, unique = true)
     @Email
     @NotBlank

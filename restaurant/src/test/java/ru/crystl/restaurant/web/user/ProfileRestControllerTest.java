@@ -22,7 +22,6 @@ import static ru.crystl.restaurant.UserTestData.*;
 import static ru.crystl.restaurant.util.exception.ErrorType.VALIDATION_ERROR;
 
 public class ProfileRestControllerTest extends AbstractControllerTest {
-
     private static final String REST_URL = ProfileRestController.REST_URL + "/";
 
     @Autowired

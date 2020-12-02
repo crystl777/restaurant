@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public class
 DataJpaVoteRepository{
-
     private final CrudVoteRepository crudRepository;
     private final CrudRestaurantRepository crudRestaurantRepository;
 

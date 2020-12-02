@@ -49,9 +49,8 @@ public class AdminRestaurantRestController extends AbstractRestaurantController 
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(@PathVariable int id) {
-        repository.delete(id);
+        super.delete(id);
     }
 
     @DeleteMapping("/votes/{id}")

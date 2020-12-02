@@ -9,7 +9,6 @@ import ru.crystl.restaurant.web.ExceptionInfoHandler;
 
 @Component
 public class UniqueMailValidator implements org.springframework.validation.Validator {
-
     private final DataJpaUserRepository repository;
 
     public UniqueMailValidator(DataJpaUserRepository repository) {
