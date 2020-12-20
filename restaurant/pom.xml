@@ -92,7 +92,7 @@
                     </configuration>
                     <deployables>
                         <deployable>
-                            <groupId>ru.crystl</groupId>
+                            <groupId>org.restaurant</groupId>
                             <artifactId>restaurant</artifactId>
                             <type>war</type>
                             <properties>
